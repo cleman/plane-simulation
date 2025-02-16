@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lancer la Simulation</title>
+</head>
+<body>
+    <h1>Simulation de Dynamique</h1>
+    
+    <form id="simulationForm">
+        <!-- Champs pour l'état initial -->
+        <h2>État Initial</h2>
+        <label for="etat1">Vx :</label><input type="number" id="etat1" name="etat1"><br>
+        <label for="etat2">Vy :</label><input type="number" id="etat2" name="etat2"><br>
+        <label for="etat3">Vz :</label><input type="number" id="etat3" name="etat3"><br>
+        <label for="etat4">Gz :</label><input type="number" id="etat4" name="etat4"><br>
+        <label for="etat5">Gy :</label><input type="number" id="etat5" name="etat5"><br>
+        <label for="etat6">Gz :</label><input type="number" id="etat6" name="etat6"><br>
+
+        <!-- Champs pour la commande de l'actionneur -->
+        <h2>Commande Actionneur</h2>
+        <label for="cmd1">RPM mot:</label><input type="number" id="cmd1" name="cmd1"><br>
+        <label for="cmd2">Aile G:</label><input type="number" id="cmd2" name="cmd2"><br>
+        <label for="cmd3">Aile D:</label><input type="number" id="cmd3" name="cmd3"><br>
+        <label for="cmd4">Gouv prof :</label><input type="number" id="cmd4" name="cmd4"><br>
+        <label for="cmd5">Gouv dir :</label><input type="number" id="cmd5" name="cmd5"><br>
+
+        <!-- Temps de simulation -->
+        <h2>Temps de Simulation</h2>
+        <label for="temps">Temps (en secondes):</label><input type="number" id="temps" name="temps"><br>
+
+        <!-- Bouton pour lancer la simulation -->
+        <button type="button" onclick="submitForm()">Lancer la Simulation</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            var formData = {
+                etat1: parseFloat(document.getElementById('etat1').value),
+                etat2: parseFloat(document.getElementById('etat2').value),
+                etat3: parseFloat(document.getElementById('etat3').value),
+                etat4: parseFloat(document.getElementById('etat4').value),
+                etat5: parseFloat(document.getElementById('etat5').value),
+                etat6: parseFloat(document.getElementById('etat6').value),
+                cmd1: parseFloat(document.getElementById('cmd1').value),
+                cmd2: parseFloat(document.getElementById('cmd2').value),
+                cmd3: parseFloat(document.getElementById('cmd3').value),
+                cmd4: parseFloat(document.getElementById('cmd4').value),
+                cmd5: parseFloat(document.getElementById('cmd5').value),
+                temps: parseFloat(document.getElementById('temps').value)
+            };
+
+            fetch('/start_simulation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Simulation lancée avec succès!");
+                console.log(data);
+            })
+            .catch(error => {
+                alert("Erreur lors du lancement de la simulation");
+                console.error(error);
+            });
+
+        }
+    </script>
+</body>
+</html>

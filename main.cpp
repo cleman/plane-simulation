@@ -1,10 +1,22 @@
 #include "dynamique.hpp"
+#include "server.h"
 
 #include <iostream>
+#include <thread>  // Ajouter pour gérer les threads
 
 using namespace std;
 
+void startServer() {
+    Server server;  // Créer une instance de la classe Server
+    server.startServer();  // Démarrer le serveur
+}
+
 int main(int argc, char **argv) {
+    // Lancer le serveur dans un thread séparé
+    thread serverThread(startServer);
+    
+    cout << "Serveur démarré..." << endl;
+    /*
     State etat;
     etat.reset();
     etat.show();
@@ -30,12 +42,16 @@ int main(int argc, char **argv) {
         dyn = compute_acc_moment(etat, forces);
         ground_correction(etat, &dyn);
         etat = update_state(etat, dyn, 0.1);
-
     }
+    
     forces.show();
     dyn.show();
     cout << "etat.angular_position.rpm_mot " << etat.angular_position.rpm_mot << endl;
     etat.show();
+    */
+
+    // Joindre le thread serveur avant de quitter
+    serverThread.join();
 
     return 0;
 }

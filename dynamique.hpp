@@ -52,6 +52,16 @@ struct Actionneur {
             gouverne_angle[i] = 0;
         }
     }
+
+    void set(const double cmd[5]) {
+        // Affecter les valeurs à pose_vec et twist_vec
+        rpm_mot = cmd[0];
+        for (int i = 0; i < 2; i++) {
+            aileron_angle[i] = cmd[i+1];  // Remplir pose_vec avec les valeurs de l'état
+            gouverne_angle[i] = cmd[i+3];  // Remplir twist_vec (ou peut-être une autre logique si twist_vec doit être différent de pose_vec)
+        }
+}
+
 };
 
 struct State {
@@ -95,6 +105,21 @@ struct State {
             cout << endl;
             }
         cout << endl;
+    }
+
+    void set(const double etat[6], const double cmd[5]) {
+        // Affecter les valeurs à pose_vec et twist_vec
+        for (int i = 0; i < 6; i++) {
+            pose_vec(i) = 0;
+            twist_vec(i) = etat[i];  // Remplir twist_vec (ou peut-être une autre logique si twist_vec doit être différent de pose_vec)
+        }
+
+        // Affecter les valeurs aux actionneurs
+        angular_position.rpm_mot = cmd[0];
+        for (int i = 0; i < 2; i++) {
+            angular_position.aileron_angle[i] = cmd[i + 1];  // cmd[1] et cmd[2] pour aileron_angle
+            angular_position.gouverne_angle[i] = cmd[i + 3];  // cmd[3] et cmd[4] pour gouverne_angle
+        }
     }
 };
 
