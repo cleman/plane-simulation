@@ -5,6 +5,6 @@
 #include "server.h"
 
 // Fonction pour lancer la simulation
-void lancer_simulation(State &etat, Actionneur &cmd, double temps);
+Data lancer_simulation(State &etat, Actionneur &cmd, double temps);
 
 #endif // SIMULATION_HPP

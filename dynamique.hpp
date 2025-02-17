@@ -182,6 +182,48 @@ struct CoefAile  {
     }
 };
 
+#include <vector>
+
+struct Data {
+
+    std::vector<double> accX;
+    std::vector<double> accY;
+    std::vector<double> accZ;
+
+    std::vector<double> speedX;
+    std::vector<double> speedY;
+    std::vector<double> speedZ;
+
+    std::vector<double> thrust;
+    std::vector<double> weight;
+    std::vector<std::vector<double>> lift;
+    std::vector<std::vector<double>> drag;
+
+    std::vector<double> time;
+    
+    void add_entry(State etat, double time_value, Forces forces, Dynamique dyn) {
+        accX.push_back(dyn.acc_vec(0));
+        accY.push_back(dyn.acc_vec(1));
+        accZ.push_back(dyn.acc_vec(2));
+        
+        // Ajouter les composantes de la vitesse dans les bons vecteurs
+        speedX.push_back(etat.twist_vec(0));
+        speedY.push_back(etat.twist_vec(1));
+        speedZ.push_back(etat.twist_vec(2));
+
+        // Ajouter la poussée
+        thrust.push_back(forces.thrust);
+        weight.push_back(forces.weight);
+
+        // Convertir lift et drag en std::vector<double> avant de les ajouter
+        lift.push_back(std::vector<double>(forces.lift, forces.lift + 4));
+        drag.push_back(std::vector<double>(forces.drag, forces.drag + 4));
+
+        // Ajouter le temps
+        time.push_back(time_value);
+    }
+};
+
 Forces compute_forces(State *etat, Actionneur cmd);
 Dynamique compute_acc_moment(State etat, Forces forces);
 void ground_correction(State etat, Dynamique *dyn);

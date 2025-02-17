@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lancer la Simulation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <h1>Simulation de Dynamique</h1>
@@ -34,7 +35,16 @@
         <button type="button" onclick="submitForm()">Lancer la Simulation</button>
     </form>
 
+    <h2>Résultats de la Simulation</h2>
+    <canvas id="forceChart" width="400" height="200"></canvas>
+    <canvas id="accChart" width="400" height="200"></canvas>
+    <canvas id="speedChart" width="400" height="200"></canvas>
+
     <script>
+        let accChart;
+        let speedChart;
+        let forceChart;
+
         function submitForm() {
             var formData = {
                 etat1: parseFloat(document.getElementById('etat1').value),
@@ -60,8 +70,79 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert("Simulation lancée avec succès!");
+                alert("Simulation terminée !");
                 console.log(data);
+
+                if (accChart) accChart.destroy();
+                if (speedChart) speedChart.destroy();
+                if (forceChart) forceChart.destroy();
+
+                var ctx0 = document.getElementById('accChart').getContext('2d');
+                accChart = new Chart(ctx0, {
+                    type: 'line',
+                    data: {
+                        labels: data.time,
+                        datasets: [
+                            { label: 'Accélération X', data: data.accX, borderColor: 'blue', fill: false },
+                            { label: 'Accélération Y', data: data.accY, borderColor: 'red', fill: false },
+                            { label: 'Accélération Z', data: data.accZ, borderColor: 'green', fill: false }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: { title: { display: true, text: 'Temps (s)' }},
+                            y: { title: { display: true, text: 'Acceleration (m/s^2)' }}
+                        }
+                    }
+                });
+
+                var ctx1 = document.getElementById('speedChart').getContext('2d');
+                speedChart = new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: data.time,
+                        datasets: [
+                            { label: 'Vitesse X', data: data.speedX, borderColor: 'blue', fill: false },
+                            { label: 'Vitesse Y', data: data.speedY, borderColor: 'red', fill: false },
+                            { label: 'Vitesse Z', data: data.speedZ, borderColor: 'green', fill: false }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: { title: { display: true, text: 'Temps (s)' }},
+                            y: { title: { display: true, text: 'Vitesse (m/s)' }}
+                        }
+                    }
+                });
+
+                var ctx2 = document.getElementById('forceChart').getContext('2d');
+                forceChart = new Chart(ctx2, {
+                    type: 'line',
+                    data: {
+                        labels: data.time,
+                        datasets: [
+                            { label: 'Thurst', data: data.thrust, borderColor: 'blue', fill: false },
+                            { label: 'Weight', data: data.weight, borderColor: 'red', fill: false },
+                            { label: 'Lift 1', data: data.lift1, borderColor: 'purple', fill: false },
+                            { label: 'Lift 2', data: data.lift2, borderColor: 'orange', fill: false },
+                            { label: 'Lift 3', data: data.lift3, borderColor: 'pink', fill: false },
+                            { label: 'Lift 4', data: data.lift4, borderColor: 'brown', fill: false },
+                            { label: 'Drag 1', data: data.drag1, borderColor: 'black', fill: false },
+                            { label: 'Drag 2', data: data.drag2, borderColor: 'gray', fill: false },
+                            { label: 'Drag 3', data: data.drag3, borderColor: 'cyan', fill: false },
+                            { label: 'Drag 4', data: data.drag4, borderColor: 'yellow', fill: false }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: { title: { display: true, text: 'Temps (s)' }},
+                            y: { title: { display: true, text: 'Forces (N)' }}
+                        }
+                    }
+                });
             })
             .catch(error => {
                 alert("Erreur lors du lancement de la simulation");

@@ -44,7 +44,7 @@ Dynamique compute_acc_moment(State etat, Forces forces) {
     dyn.reset();
 
     double theta = etat.pose_vec(4);
-
+    
     dyn.acc_vec(0) = forces.thrust - (forces.lift[0] + forces.lift[1])*sin(alpha) - (forces.drag[0] + forces.drag[1])*cos(alpha) - forces.drag[2] - forces.drag[3] + forces.weight*sin(theta);
     dyn.acc_vec(1) = -forces.lift[3];
     dyn.acc_vec(2) = (forces.lift[0] + forces.lift[1])*cos(alpha) + forces.lift[3] - forces.weight*cos(theta);
@@ -92,13 +92,6 @@ State update_state(State etat, Dynamique dynamique, double dt) {
     etat.twist_vec.segment(0, 3) += dynamique.acc_vec * dt;
     etat.twist_vec.segment(3, 3) += dynamique.moment_vec * dt;
     etat.pose_vec += etat.twist_vec * dt;
-
-    /*
-    if (etat.pose_vec(2) < 0) {
-        etat.pose_vec(2) = 0;
-        if (etat.twist_vec(2) < 0) etat.twist_vec(2) = 0;
-    }
-    */
 
     return etat;
 }
