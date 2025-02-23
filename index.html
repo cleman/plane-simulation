@@ -5,45 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lancer la Simulation</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-section {
+            width: 48%;
+        }
+    </style>    
 </head>
 <body>
     <h1>Simulation de Dynamique</h1>
     
-    <form id="simulationForm">
-        <!-- Champs pour l'état initial -->
-        <h2>État Initial</h2>
-        <label for="etat1">Vx :</label><input type="number" id="etat1" name="etat1"><br>
-        <label for="etat2">Vy :</label><input type="number" id="etat2" name="etat2"><br>
-        <label for="etat3">Vz :</label><input type="number" id="etat3" name="etat3"><br>
-        <label for="etat4">Gz :</label><input type="number" id="etat4" name="etat4"><br>
-        <label for="etat5">Gy :</label><input type="number" id="etat5" name="etat5"><br>
-        <label for="etat6">Gz :</label><input type="number" id="etat6" name="etat6"><br>
+    <div class="form-container">
+        <!-- Première colonne : état initial et commande actionneur -->    
+        <form id="simulationForm" class="form-section">
+            <!-- Champs pour l'état initial -->
+            <h2>État Initial</h2>
+            <label for="etat1">Vx :</label><input type="number" id="etat1" name="etat1"><br>
+            <label for="etat2">Vy :</label><input type="number" id="etat2" name="etat2"><br>
+            <label for="etat3">Vz :</label><input type="number" id="etat3" name="etat3"><br>
+            <label for="etat4">Gz :</label><input type="number" id="etat4" name="etat4"><br>
+            <label for="etat5">Gy :</label><input type="number" id="etat5" name="etat5"><br>
+            <label for="etat6">Gz :</label><input type="number" id="etat6" name="etat6"><br>
 
-        <!-- Champs pour la commande de l'actionneur -->
-        <h2>Commande Actionneur</h2>
-        <label for="cmd1">RPM mot:</label><input type="number" id="cmd1" name="cmd1"><br>
-        <label for="cmd2">Aile G:</label><input type="number" id="cmd2" name="cmd2"><br>
-        <label for="cmd3">Aile D:</label><input type="number" id="cmd3" name="cmd3"><br>
-        <label for="cmd4">Gouv prof :</label><input type="number" id="cmd4" name="cmd4"><br>
-        <label for="cmd5">Gouv dir :</label><input type="number" id="cmd5" name="cmd5"><br>
+            <!-- Champs pour la commande de l'actionneur -->
+            <h2>Commande Actionneur</h2>
+            <label for="cmd1">RPM mot:</label><input type="number" id="cmd1" name="cmd1"><br>
+            <label for="cmd2">Aile G:</label><input type="number" id="cmd2" name="cmd2"><br>
+            <label for="cmd3">Aile D:</label><input type="number" id="cmd3" name="cmd3"><br>
+            <label for="cmd4">Gouv prof :</label><input type="number" id="cmd4" name="cmd4"><br>
+            <label for="cmd5">Gouv dir :</label><input type="number" id="cmd5" name="cmd5"><br>
 
-        <!-- Temps de simulation -->
-        <h2>Temps de Simulation</h2>
-        <label for="temps">Temps (en secondes):</label><input type="number" id="temps" name="temps"><br>
+            <!-- Temps de simulation -->
+            <h2>Temps de Simulation</h2>
+            <label for="temps">Temps (en secondes):</label><input type="number" id="temps" name="temps"><br>
 
-        <!-- Bouton pour lancer la simulation -->
-        <button type="button" onclick="submitForm()">Lancer la Simulation</button>
-    </form>
+            <!-- Bouton pour lancer la simulation -->
+            <button type="button" onclick="submitForm()">Lancer la Simulation</button>
+        </form>
+
+        <!-- Deuxième colonne : Coefficients PID -->
+        <div class="form-section">
+            <h2>Contrôleurs PID</h2>
+
+            <h3>Contrôleur 1 (Pitch)</h3>
+            <label for="pid1_kp">Kp :</label><input type="number" id="pid1_kp" name="pid1_kp"><br>
+            <label for="pid1_ki">Ki :</label><input type="number" id="pid1_ki" name="pid1_ki"><br>
+            <label for="pid1_kd">Kd :</label><input type="number" id="pid1_kd" name="pid1_kd"><br>
+
+            <h3>Contrôleur 2 (Roll)</h3>
+            <label for="pid2_kp">Kp :</label><input type="number" id="pid2_kp" name="pid2_kp"><br>
+            <label for="pid2_ki">Ki :</label><input type="number" id="pid2_ki" name="pid2_ki"><br>
+            <label for="pid2_kd">Kd :</label><input type="number" id="pid2_kd" name="pid2_kd"><br>
+
+            <h3>Contrôleur 3 (Yaw)</h3>
+            <label for="pid3_kp">Kp :</label><input type="number" id="pid3_kp" name="pid3_kp"><br>
+            <label for="pid3_ki">Ki :</label><input type="number" id="pid3_ki" name="pid3_ki"><br>
+            <label for="pid3_kd">Kd :</label><input type="number" id="pid3_kd" name="pid3_kd"><br>
+        </div>
+    </div>
 
     <h2>Résultats de la Simulation</h2>
     <canvas id="forceChart" width="400" height="200"></canvas>
     <canvas id="accChart" width="400" height="200"></canvas>
     <canvas id="speedChart" width="400" height="200"></canvas>
+    <!-- Controlleur 1 graphe (pitch) -->
+    <canvas id="c1Chart" width="400" height="200"></canvas>
 
     <script>
         let accChart;
         let speedChart;
         let forceChart;
+        let c1Chart;
 
         function submitForm() {
             var formData = {
@@ -58,9 +93,15 @@
                 cmd3: parseFloat(document.getElementById('cmd3').value),
                 cmd4: parseFloat(document.getElementById('cmd4').value),
                 cmd5: parseFloat(document.getElementById('cmd5').value),
-                temps: parseFloat(document.getElementById('temps').value)
+                temps: parseFloat(document.getElementById('temps').value),
+                pid1: {
+                    kp: parseFloat(document.getElementById('pid1_kp').value),
+                    ki: parseFloat(document.getElementById('pid1_ki').value),
+                    kd: parseFloat(document.getElementById('pid1_kd').value),
+                }
             };
 
+            console.log(JSON.stringify(formData, null, 2));
             fetch('/start_simulation', {
                 method: 'POST',
                 headers: {
@@ -70,12 +111,13 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert("Simulation terminée !");
+                //alert("Simulation terminée !");
                 console.log(data);
 
                 if (accChart) accChart.destroy();
                 if (speedChart) speedChart.destroy();
                 if (forceChart) forceChart.destroy();
+                if (c1Chart) c1Chart.destroy();
 
                 var ctx0 = document.getElementById('accChart').getContext('2d');
                 accChart = new Chart(ctx0, {
@@ -140,6 +182,26 @@
                         scales: {
                             x: { title: { display: true, text: 'Temps (s)' }},
                             y: { title: { display: true, text: 'Forces (N)' }}
+                        }
+                    }
+                });
+
+                var ctx3 = document.getElementById('c1Chart').getContext('2d');
+                c1Chart = new Chart(ctx3, {
+                    type: 'line',
+                    data: {
+                        labels: data.time,
+                        datasets: [
+                            { label: 'Pitch pos', data: data.c1_pos, borderColor: 'blue', fill: false },
+                            { label: 'Pitch vit', data: data.c1_vit, borderColor: 'red', fill: false },
+                            { label: 'Pitch acc', data: data.c1_acc, borderColor: 'green', fill: false }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: { title: { display: true, text: 'Temps (s)' }},
+                            y: { title: { display: true, text: 'rad-rad/s-rad/s/s' }}
                         }
                     }
                 });

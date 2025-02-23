@@ -18,8 +18,8 @@ extern double AR[2];
 
 extern double k_D[2];
 
-extern double C_L_0[2];
-extern double C_D_0[2];
+extern double C_L_0[4];
+extern double C_D_0[4];
 extern double C_L_alpha[2];
 extern double C_L_delta[2];
 extern double C_D_delta[2];
@@ -58,5 +58,10 @@ extern double m2;       // Aile droite
 extern double m3;       // Gouverne direction
 extern double m4;       // Gouverne profondeur
 extern double m5;       // Contre-poids
+
+// Composantes de la matrices d'inertie
+extern double Ixx;      // Moment d'inertie autour de l'axe x
+extern double Iyy;      // Moment d'inertie autour de l'axe y
+extern double Izz;      // Moment d'inertie autour de l'axe z
 
 #endif

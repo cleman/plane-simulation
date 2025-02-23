@@ -170,8 +170,8 @@ struct CoefAile  {
 
     void compute_coef(double angle[4]) {
         for (int i = 0; i < 4; i++) {
-            C_L[i] = C_L_0[i/2] + C_L_alpha[i/2]*alpha + C_L_delta[i/2]*angle[i];
-            C_D[i] = C_D_0[i/2] + k_D[i/2]*pow(C_L[i],2) + C_D_delta[i/2]*angle[i];
+            C_L[i] = C_L_0[i] + C_L_alpha[i/2]*alpha + C_L_delta[i/2]*angle[i];
+            C_D[i] = C_D_0[i] + k_D[i/2]*pow(C_L[i],2) + C_D_delta[i/2]*angle[i];
         }
     }
 
@@ -199,6 +199,11 @@ struct Data {
     std::vector<std::vector<double>> lift;
     std::vector<std::vector<double>> drag;
 
+    // Controlleur 1 (pitch)
+    std::vector<double> angle_pitch;
+    std::vector<double> angle_pitch_dot;
+    std::vector<double> angle_pitch_ddot;
+
     std::vector<double> time;
     
     void add_entry(State etat, double time_value, Forces forces, Dynamique dyn) {
@@ -221,6 +226,12 @@ struct Data {
 
         // Ajouter le temps
         time.push_back(time_value);
+    }
+
+    void add_entry_c1(double angle_pitch_val, double angle_pitch_dot_val, double angle_pitch_ddot_val) {
+        angle_pitch.push_back(angle_pitch_val);
+        angle_pitch_dot.push_back(angle_pitch_dot_val);
+        angle_pitch_ddot.push_back(angle_pitch_ddot_val);
     }
 };
 

@@ -1,5 +1,6 @@
 #include "server.h"
 #include "simulation.hpp"  // Inclure le fichier pour la simulation
+#include "controlleurs.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -40,7 +41,16 @@ void Server::setupRoutes(crow::SimpleApp& app) {
             data["cmd5"].d()
         };
 
+        double pid1[3] = {
+            data["pid1"]["kp"].d(),
+            data["pid1"]["ki"].d(),
+            data["pid1"]["kd"].d()
+        };
+
         double temps = data["temps"].d();  // Temps de simulation
+
+        // Init pid
+        set_pid1(pid1);
 
         // Initialiser l'état et la commande
         State etat_init;
@@ -67,6 +77,10 @@ void Server::setupRoutes(crow::SimpleApp& app) {
 
         std::vector<double> lift1_series, lift2_series, lift3_series, lift4_series;
         std::vector<double> drag1_series, drag2_series, drag3_series, drag4_series;
+
+        std::vector<double> c1_pos = data_simu.angle_pitch;
+        std::vector<double> c1_vit = data_simu.angle_pitch_dot;
+        std::vector<double> c1_acc = data_simu.angle_pitch_ddot;
 
         for (const auto& l : data_simu.lift) {
             lift1_series.push_back(l[0]);
@@ -108,6 +122,10 @@ void Server::setupRoutes(crow::SimpleApp& app) {
         response["drag2"] = crow::json::wvalue::list(drag2_series.begin(), drag2_series.end());
         response["drag3"] = crow::json::wvalue::list(drag3_series.begin(), drag3_series.end());
         response["drag4"] = crow::json::wvalue::list(drag4_series.begin(), drag4_series.end());
+
+        response["c1_pos"] = crow::json::wvalue::list(c1_pos.begin(), c1_pos.end());
+        response["c1_vit"] = crow::json::wvalue::list(c1_vit.begin(), c1_vit.end());
+        response["c1_acc"] = crow::json::wvalue::list(c1_acc.begin(), c1_acc.end());
 
         return crow::response(response);
     });

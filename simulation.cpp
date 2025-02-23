@@ -1,4 +1,5 @@
 #include "simulation.hpp"
+#include "controlleurs.hpp"
 #include <iostream>
 #include <vector>
 
@@ -17,6 +18,16 @@ Data lancer_simulation(State &etat, Actionneur &cmd, double temps) {
 
         // Stocker les résultats à chaque itération
         simulation_data.add_entry(etat, i, forces, dyn);
+        //std::cout << "Valeur c1_acc : " << dyn.moment_vec(2) << std::endl;
+
+        forces = compute_forces(&etat, cmd);
+        std::cout << "controlleur1_value avant : " << cmd.gouverne_angle[0] << std::endl;
+        cmd.gouverne_angle[0] = controller_pitch(etat, 0, dt, forces, &simulation_data);
+        std::cout << "controlleur1_value : " << cmd.gouverne_angle[0] << std::endl;
+
+        forces.show();
+        dyn.show();
+        etat.show();
     }
 
     forces.show();
