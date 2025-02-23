@@ -200,6 +200,7 @@ struct Data {
     std::vector<std::vector<double>> drag;
 
     // Controlleur 1 (pitch)
+    std::vector<double> delta;
     std::vector<double> angle_pitch;
     std::vector<double> angle_pitch_dot;
     std::vector<double> angle_pitch_ddot;
@@ -228,7 +229,8 @@ struct Data {
         time.push_back(time_value);
     }
 
-    void add_entry_c1(double angle_pitch_val, double angle_pitch_dot_val, double angle_pitch_ddot_val) {
+    void add_entry_c1(double delta_val, double angle_pitch_val, double angle_pitch_dot_val, double angle_pitch_ddot_val) {
+        delta.push_back(delta_val);
         angle_pitch.push_back(angle_pitch_val);
         angle_pitch_dot.push_back(angle_pitch_dot_val);
         angle_pitch_ddot.push_back(angle_pitch_ddot_val);

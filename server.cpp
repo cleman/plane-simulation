@@ -78,6 +78,7 @@ void Server::setupRoutes(crow::SimpleApp& app) {
         std::vector<double> lift1_series, lift2_series, lift3_series, lift4_series;
         std::vector<double> drag1_series, drag2_series, drag3_series, drag4_series;
 
+        std::vector<double> delta_c1 = data_simu.delta;
         std::vector<double> c1_pos = data_simu.angle_pitch;
         std::vector<double> c1_vit = data_simu.angle_pitch_dot;
         std::vector<double> c1_acc = data_simu.angle_pitch_ddot;
@@ -123,6 +124,7 @@ void Server::setupRoutes(crow::SimpleApp& app) {
         response["drag3"] = crow::json::wvalue::list(drag3_series.begin(), drag3_series.end());
         response["drag4"] = crow::json::wvalue::list(drag4_series.begin(), drag4_series.end());
 
+        response["delta_c1"] = crow::json::wvalue::list(delta_c1.begin(), delta_c1.end());
         response["c1_pos"] = crow::json::wvalue::list(c1_pos.begin(), c1_pos.end());
         response["c1_vit"] = crow::json::wvalue::list(c1_vit.begin(), c1_vit.end());
         response["c1_acc"] = crow::json::wvalue::list(c1_acc.begin(), c1_acc.end());

@@ -23,24 +23,24 @@
         <form id="simulationForm" class="form-section">
             <!-- Champs pour l'état initial -->
             <h2>État Initial</h2>
-            <label for="etat1">Vx :</label><input type="number" id="etat1" name="etat1"><br>
-            <label for="etat2">Vy :</label><input type="number" id="etat2" name="etat2"><br>
-            <label for="etat3">Vz :</label><input type="number" id="etat3" name="etat3"><br>
-            <label for="etat4">Gz :</label><input type="number" id="etat4" name="etat4"><br>
-            <label for="etat5">Gy :</label><input type="number" id="etat5" name="etat5"><br>
-            <label for="etat6">Gz :</label><input type="number" id="etat6" name="etat6"><br>
+            <label for="etat1">Vx :</label><input type="number" id="etat1" name="etat1" value="0.0"><br>
+            <label for="etat2">Vy :</label><input type="number" id="etat2" name="etat2" value="0.0"><br>
+            <label for="etat3">Vz :</label><input type="number" id="etat3" name="etat3" value="0.0"><br>
+            <label for="etat4">Gz :</label><input type="number" id="etat4" name="etat4" value="0.0"><br>
+            <label for="etat5">Gy :</label><input type="number" id="etat5" name="etat5" value="0.0"><br>
+            <label for="etat6">Gz :</label><input type="number" id="etat6" name="etat6" value="0.0"><br>
 
             <!-- Champs pour la commande de l'actionneur -->
             <h2>Commande Actionneur</h2>
-            <label for="cmd1">RPM mot:</label><input type="number" id="cmd1" name="cmd1"><br>
-            <label for="cmd2">Aile G:</label><input type="number" id="cmd2" name="cmd2"><br>
-            <label for="cmd3">Aile D:</label><input type="number" id="cmd3" name="cmd3"><br>
-            <label for="cmd4">Gouv prof :</label><input type="number" id="cmd4" name="cmd4"><br>
-            <label for="cmd5">Gouv dir :</label><input type="number" id="cmd5" name="cmd5"><br>
+            <label for="cmd1">RPM mot:</label><input type="number" id="cmd1" name="cmd1" value="150.0"><br>
+            <label for="cmd2">Aile G:</label><input type="number" id="cmd2" name="cmd2" value="0.0"><br>
+            <label for="cmd3">Aile D:</label><input type="number" id="cmd3" name="cmd3" value="0.0"><br>
+            <label for="cmd4">Gouv prof :</label><input type="number" id="cmd4" name="cmd4" value="0.0"><br>
+            <label for="cmd5">Gouv dir :</label><input type="number" id="cmd5" name="cmd5" value="0.0"><br>
 
             <!-- Temps de simulation -->
             <h2>Temps de Simulation</h2>
-            <label for="temps">Temps (en secondes):</label><input type="number" id="temps" name="temps"><br>
+            <label for="temps">Temps (en secondes):</label><input type="number" id="temps" name="temps" value="10.0"><br>
 
             <!-- Bouton pour lancer la simulation -->
             <button type="button" onclick="submitForm()">Lancer la Simulation</button>
@@ -51,19 +51,19 @@
             <h2>Contrôleurs PID</h2>
 
             <h3>Contrôleur 1 (Pitch)</h3>
-            <label for="pid1_kp">Kp :</label><input type="number" id="pid1_kp" name="pid1_kp"><br>
-            <label for="pid1_ki">Ki :</label><input type="number" id="pid1_ki" name="pid1_ki"><br>
-            <label for="pid1_kd">Kd :</label><input type="number" id="pid1_kd" name="pid1_kd"><br>
+            <label for="pid1_kp">Kp :</label><input type="number" id="pid1_kp" name="pid1_kp" value="5.0"><br>
+            <label for="pid1_ki">Ki :</label><input type="number" id="pid1_ki" name="pid1_ki" value="20.0"><br>
+            <label for="pid1_kd">Kd :</label><input type="number" id="pid1_kd" name="pid1_kd" value="0.0"><br>
 
             <h3>Contrôleur 2 (Roll)</h3>
-            <label for="pid2_kp">Kp :</label><input type="number" id="pid2_kp" name="pid2_kp"><br>
-            <label for="pid2_ki">Ki :</label><input type="number" id="pid2_ki" name="pid2_ki"><br>
-            <label for="pid2_kd">Kd :</label><input type="number" id="pid2_kd" name="pid2_kd"><br>
+            <label for="pid2_kp">Kp :</label><input type="number" id="pid2_kp" name="pid2_kp" value="0.0"><br>
+            <label for="pid2_ki">Ki :</label><input type="number" id="pid2_ki" name="pid2_ki" value="0.0"><br>
+            <label for="pid2_kd">Kd :</label><input type="number" id="pid2_kd" name="pid2_kd" value="0.0"><br>
 
             <h3>Contrôleur 3 (Yaw)</h3>
-            <label for="pid3_kp">Kp :</label><input type="number" id="pid3_kp" name="pid3_kp"><br>
-            <label for="pid3_ki">Ki :</label><input type="number" id="pid3_ki" name="pid3_ki"><br>
-            <label for="pid3_kd">Kd :</label><input type="number" id="pid3_kd" name="pid3_kd"><br>
+            <label for="pid3_kp">Kp :</label><input type="number" id="pid3_kp" name="pid3_kp" value="0.0"><br>
+            <label for="pid3_ki">Ki :</label><input type="number" id="pid3_ki" name="pid3_ki" value="0.0"><br>
+            <label for="pid3_kd">Kd :</label><input type="number" id="pid3_kd" name="pid3_kd" value="0.0"><br>
         </div>
     </div>
 
@@ -192,6 +192,7 @@
                     data: {
                         labels: data.time,
                         datasets: [
+                            { label: 'Delta val', data: data.delta_c1, borderColor: 'yellow', fill: false },
                             { label: 'Pitch pos', data: data.c1_pos, borderColor: 'blue', fill: false },
                             { label: 'Pitch vit', data: data.c1_vit, borderColor: 'red', fill: false },
                             { label: 'Pitch acc', data: data.c1_acc, borderColor: 'green', fill: false }
@@ -201,7 +202,7 @@
                         responsive: true,
                         scales: {
                             x: { title: { display: true, text: 'Temps (s)' }},
-                            y: { title: { display: true, text: 'rad-rad/s-rad/s/s' }}
+                            y: { title: { display: true, text: 'rad-rad-rad/s-rad/s/s' }}
                         }
                     }
                 });
