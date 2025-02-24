@@ -51,13 +51,13 @@
             <h2>Contrôleurs PID</h2>
 
             <h3>Contrôleur 1 (Pitch)</h3>
-            <label for="pid1_kp">Kp :</label><input type="number" id="pid1_kp" name="pid1_kp" value="5.0"><br>
-            <label for="pid1_ki">Ki :</label><input type="number" id="pid1_ki" name="pid1_ki" value="20.0"><br>
-            <label for="pid1_kd">Kd :</label><input type="number" id="pid1_kd" name="pid1_kd" value="0.0"><br>
+            <label for="pid1_kp">Kp :</label><input type="number" id="pid1_kp" name="pid1_kp" value="10.0"><br>
+            <label for="pid1_ki">Ki :</label><input type="number" id="pid1_ki" name="pid1_ki" value="2.0"><br>
+            <label for="pid1_kd">Kd :</label><input type="number" id="pid1_kd" name="pid1_kd" value="10.0"><br>
 
-            <h3>Contrôleur 2 (Roll)</h3>
-            <label for="pid2_kp">Kp :</label><input type="number" id="pid2_kp" name="pid2_kp" value="0.0"><br>
-            <label for="pid2_ki">Ki :</label><input type="number" id="pid2_ki" name="pid2_ki" value="0.0"><br>
+            <h3>Contrôleur 2 (Vitesse X)</h3>
+            <label for="pid2_kp">Kp :</label><input type="number" id="pid2_kp" name="pid2_kp" value="4.0"><br>
+            <label for="pid2_ki">Ki :</label><input type="number" id="pid2_ki" name="pid2_ki" value="0.2"><br>
             <label for="pid2_kd">Kd :</label><input type="number" id="pid2_kd" name="pid2_kd" value="0.0"><br>
 
             <h3>Contrôleur 3 (Yaw)</h3>
@@ -98,6 +98,11 @@
                     kp: parseFloat(document.getElementById('pid1_kp').value),
                     ki: parseFloat(document.getElementById('pid1_ki').value),
                     kd: parseFloat(document.getElementById('pid1_kd').value),
+                },
+                pid2: {
+                    kp: parseFloat(document.getElementById('pid2_kp').value),
+                    ki: parseFloat(document.getElementById('pid2_ki').value),
+                    kd: parseFloat(document.getElementById('pid2_kd').value),
                 }
             };
 

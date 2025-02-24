@@ -47,10 +47,17 @@ void Server::setupRoutes(crow::SimpleApp& app) {
             data["pid1"]["kd"].d()
         };
 
+        double pid2[3] = {
+            data["pid2"]["kp"].d(),
+            data["pid2"]["ki"].d(),
+            data["pid2"]["kd"].d()
+        };
+
         double temps = data["temps"].d();  // Temps de simulation
 
         // Init pid
         set_pid1(pid1);
+        set_pid2(pid2);
 
         // Initialiser l'état et la commande
         State etat_init;
