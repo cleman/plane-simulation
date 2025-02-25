@@ -61,8 +61,8 @@ Dynamique compute_acc_moment(State etat, Forces forces) {
     
     VectorXd sum_tau(3);
 
-    sum_tau(0) = ( (forces.lift[0]-forces.lift[1])*cos(alpha) - (forces.drag[0]-forces.drag[1])*sin(alpha) )*f_dim + (forces.lift[3] - forces.drag[3])*c_dim;
-    sum_tau(1) = ( (forces.drag[0]+forces.drag[1])*sin(alpha) - (forces.lift[0]+forces.lift[1])*cos(alpha) )*(g_dim-h_dim) - forces.lift[2]*(g_dim-a_dim+j_dim);
+    sum_tau(0) = ( (forces.lift[0]-forces.lift[1])*cos(alpha) - (forces.drag[0]-forces.drag[1])*sin(alpha) )*f_dim + (forces.lift[3])*c_dim;
+    sum_tau(1) = ( (forces.drag[0]+forces.drag[1])*sin(alpha) - (forces.lift[0]+forces.lift[1])*cos(alpha) )*(g_dim-h_dim) - forces.lift[2]*(g_dim-a_dim+j_dim) + forces.drag[3]*c_dim;
     sum_tau(2) = ( (forces.lift[0] -forces.lift[1])*sin(alpha) + (forces.drag[0]-forces.drag[1])*cos(alpha) )*f_dim - forces.lift[3]*(g_dim-a_dim+j_dim);
 
     cout << "sum_tau[0] = " << sum_tau(0) << endl;

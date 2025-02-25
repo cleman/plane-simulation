@@ -53,6 +53,9 @@ void Server::setupRoutes(crow::SimpleApp& app) {
             data["pid2"]["kd"].d()
         };
 
+        double altitude_u = data["altitude_u"].d();
+        double vitesse_u = data["vitesse_u"].d();
+
         double temps = data["temps"].d();  // Temps de simulation
 
         // Init pid
@@ -67,7 +70,7 @@ void Server::setupRoutes(crow::SimpleApp& app) {
         cmd_act.set(cmd);  // Méthode pour configurer l'actionneur à partir de l'input
 
         // Appeler la fonction de simulation
-        Data data_simu = lancer_simulation(etat_init, cmd_act, temps);
+        Data data_simu = lancer_simulation(etat_init, cmd_act, temps, altitude_u, vitesse_u);
 
         // Exemple : récupérer les résultats sous forme de vecteurs
         std::vector<double> time_series = data_simu.time;        // Fonction fictive pour récupérer le temps

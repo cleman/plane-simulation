@@ -11,7 +11,7 @@
             justify-content: space-between;
         }
         .form-section {
-            width: 48%;
+            width: 32%;
         }
     </style>    
 </head>
@@ -52,18 +52,25 @@
 
             <h3>Contrôleur 1 (Pitch)</h3>
             <label for="pid1_kp">Kp :</label><input type="number" id="pid1_kp" name="pid1_kp" value="10.0"><br>
-            <label for="pid1_ki">Ki :</label><input type="number" id="pid1_ki" name="pid1_ki" value="2.0"><br>
+            <label for="pid1_ki">Ki :</label><input type="number" id="pid1_ki" name="pid1_ki" value="5.0"><br>
             <label for="pid1_kd">Kd :</label><input type="number" id="pid1_kd" name="pid1_kd" value="10.0"><br>
 
             <h3>Contrôleur 2 (Vitesse X)</h3>
             <label for="pid2_kp">Kp :</label><input type="number" id="pid2_kp" name="pid2_kp" value="4.0"><br>
-            <label for="pid2_ki">Ki :</label><input type="number" id="pid2_ki" name="pid2_ki" value="0.2"><br>
-            <label for="pid2_kd">Kd :</label><input type="number" id="pid2_kd" name="pid2_kd" value="0.0"><br>
+            <label for="pid2_ki">Ki :</label><input type="number" id="pid2_ki" name="pid2_ki" value="0.0"><br>
+            <label for="pid2_kd">Kd :</label><input type="number" id="pid2_kd" name="pid2_kd" value="0.4"><br>
 
             <h3>Contrôleur 3 (Yaw)</h3>
             <label for="pid3_kp">Kp :</label><input type="number" id="pid3_kp" name="pid3_kp" value="0.0"><br>
             <label for="pid3_ki">Ki :</label><input type="number" id="pid3_ki" name="pid3_ki" value="0.0"><br>
             <label for="pid3_kd">Kd :</label><input type="number" id="pid3_kd" name="pid3_kd" value="0.0"><br>
+        </div>
+
+        <!-- Troisième colonne : Commande globle -->
+        <div class="form-section">
+            <h2>Commande Globale</h2>
+            <label for="altitude_u">Altitude :</label><input type="number" id="altitude_u" name="altitude_u" value="0.0"><br>
+            <label for="vitesse_u">Vitesse :</label><input type="number" id="vitesse_u" name="vitesse_u" value="15.0"><br>
         </div>
     </div>
 
@@ -103,7 +110,9 @@
                     kp: parseFloat(document.getElementById('pid2_kp').value),
                     ki: parseFloat(document.getElementById('pid2_ki').value),
                     kd: parseFloat(document.getElementById('pid2_kd').value),
-                }
+                },
+                altitude_u: parseFloat(document.getElementById('altitude_u').value),
+                vitesse_u: parseFloat(document.getElementById('vitesse_u').value)
             };
 
             console.log(JSON.stringify(formData, null, 2));

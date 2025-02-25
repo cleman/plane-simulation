@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-Data lancer_simulation(State &etat, Actionneur &cmd, double temps) {
+Data lancer_simulation(State &etat, Actionneur &cmd, double temps, double altitude_u, double vitesse_u) {
     std::cout << "Lancement de la simulation" << std::endl;
     Forces forces;
     Dynamique dyn;
@@ -25,7 +25,7 @@ Data lancer_simulation(State &etat, Actionneur &cmd, double temps) {
         // Gouverne profondeur
         cmd.gouverne_angle[0] = controller_pitch(0, dt, etat, forces, &simulation_data);
         // Vitesse moteur
-        cmd.rpm_mot = controller_rpm(15, dt, etat, forces, dyn, &simulation_data);
+        cmd.rpm_mot = controller_rpm(vitesse_u, dt, etat, forces, dyn, &simulation_data);
 
         
         forces.show();

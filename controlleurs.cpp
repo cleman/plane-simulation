@@ -4,7 +4,7 @@
 // Pitch controller
 double sum_err_cont1 = 0;
 double kp1 = 10;
-double kd1 = 2;
+double kd1 = 5;
 double ki1 = 10;
 
 double controller_pitch(double cons, double dt, State etat, Forces forces, Data *s) {
@@ -40,16 +40,16 @@ double controller_pitch(double cons, double dt, State etat, Forces forces, Data 
 // set_pid function to set kp, ki and kd values, take an array of double as argument
 void set_pid1(double* pid_values) {
     kp1 = pid_values[0];
-    ki1 = pid_values[2];
-    kd1 = pid_values[1];
+    ki1 = pid_values[1];
+    kd1 = pid_values[2];
     sum_err_cont1 = 0;
 }
 
 // Pitch controller
 double sum_err_cont2 = 0;
-double kp2 = 1;
+double kp2 = 4;
 double kd2 = 0;
-double ki2 = 0;
+double ki2 = 0.4;
 
 double controller_rpm(double cons, double dt, State etat, Forces forces, Dynamique dyn, Data *s) {
     double theta = etat.pose_vec(4);
@@ -82,7 +82,7 @@ double controller_rpm(double cons, double dt, State etat, Forces forces, Dynamiq
 
 void set_pid2(double* pid_values) {
     kp2 = pid_values[0];
-    ki2 = pid_values[2];
-    kd2 = pid_values[1];
+    ki2 = pid_values[1];
+    kd2 = pid_values[2];
     sum_err_cont2 = 0;
 }
